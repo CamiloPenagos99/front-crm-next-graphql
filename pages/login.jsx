@@ -4,7 +4,7 @@ const Login = () => {
   return (
     <>
       <Layout>
-        <h1 className="text-center text-2xl text-black font-light">Login</h1>
+        <h1 className="text-center text-4xl text-black font-light font-mono">Login</h1>
         <div className="flex justify-center mt-5">
           <div className="w-full max-w-sm">
             <form className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4 py-1">
@@ -37,7 +37,7 @@ const Login = () => {
                   placeholder="Contraseña"
                 ></input>
               </div>
-              <input type="submit" className="bg-gray-800 w-full mt-5 p-2 text-white uppercase tw-hover:underline tw-no-underline" value="Iniciar Sesion" />
+              <input type="submit" className="bg-gray-800 w-full mt-5 p-2 text-white uppercase tw-hover:underline tw-no-underline" value="Inicio Sesion" />
             </form>
           </div>
         </div>
