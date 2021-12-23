@@ -15,7 +15,7 @@ const Sidebar = () => {
       <nav className="mt-5 list-none">
         <li
           className={
-            router.pathname === "/" ? " rounded-xl bg-green-400 p-2" : "p-2"
+            router.pathname === "/" ? "  bg-green-400 p-2" : "p-2"
           }
         >
           <Link href="/">
@@ -27,7 +27,7 @@ const Sidebar = () => {
         <li
           className={
             router.pathname === "/pedidos"
-              ? " rounded-xl bg-green-400 p-2"
+              ? "  bg-green-400 p-2"
               : "p-2"
           }
         >
@@ -40,7 +40,7 @@ const Sidebar = () => {
         <li
           className={
             router.pathname === "/productos"
-              ? "rounded-xl bg-green-400 p-2"
+              ? " bg-green-400 p-2"
               : "p-2"
           }
         >
