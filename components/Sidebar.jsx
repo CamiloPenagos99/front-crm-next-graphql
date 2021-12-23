@@ -13,21 +13,37 @@ const Sidebar = () => {
         </p>
       </div>
       <nav className="mt-5 list-none">
-        <li className={router.pathname==="/" ? "bg-blue-800 p-3" : "p-3"}>
+        <li
+          className={
+            router.pathname === "/" ? " rounded-xl bg-green-400 p-2" : "p-2"
+          }
+        >
           <Link href="/">
             <a className="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
               Clientes
             </a>
           </Link>
         </li>
-        <li>
+        <li
+          className={
+            router.pathname === "/pedidos"
+              ? " rounded-xl bg-green-400 p-2"
+              : "p-2"
+          }
+        >
           <Link href="/pedidos">
             <a className="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
               Pedidos
             </a>
           </Link>
         </li>
-        <li>
+        <li
+          className={
+            router.pathname === "/productos"
+              ? "rounded-xl bg-green-400 p-2"
+              : "p-2"
+          }
+        >
           <Link href="/productos">
             <a className="block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
               Producto
