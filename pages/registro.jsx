@@ -16,8 +16,9 @@ const NUEVA_CUENTA = gql`
 `;
 const Registro = () => {
   //state operacion
-
+  console.log("Componente redenrizando...");
   const [mensaje, setMensaje] = useState(null);
+  const [errorgql, setErrorgql] = useState(null);
   //Crear usuario, Mutation
   const [usuario] = useMutation(NUEVA_CUENTA);
   //validación del formulario
@@ -40,7 +41,7 @@ const Registro = () => {
         .min(6, "El Password debe ser de minimo, 6 digitos"),
     }),
     //se ejecuta cuando se da submit al form
-    onSubmit: async (valores) => {
+    onSubmit: async (valores, { resetForm }) => {
       console.log("Enviando...", valores);
       try {
         const { data } = await usuario({
@@ -53,13 +54,23 @@ const Registro = () => {
         console.log("User", data);
         if (data) {
           setMensaje(true);
+          setTimeout(() => setMensaje(null), 3000);
+          setTimeout(() => resetForm(), 1000);
         }
         //alert(`¡Usuario ${data.usuario.nombre} creado correctamente!`);
-      } catch (error) {
-        console.log("error", error);
+      } catch (e) {
+        console.log("Error al registrar");
+        setErrorgql(e.message);
+        console.log('estado: ', errorgql)
+        console.log("Error al registrar: ", e.message);
+        setTimeout(() => setErrorgql(null), 3000);
+        setTimeout(() => resetForm(), 1000);
+        console.log('estado: ', errorgql)
       }
     },
   });
+
+  console.log("Componente redenrizando... FUERA");
 
   const mostrar = () => {
     return (
@@ -82,6 +93,31 @@ const Registro = () => {
             <p className="text-sm text-green-500">
               El usuario vendedor, ha sido registrado en el sistema.
             </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const mostrarError = () => {
+    return (
+      <div
+        className="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md"
+        role="alert"
+      >
+        <div className="flex">
+          <div className="py-1">
+            <svg
+              className="fill-current h-6 w-6 text-red-500 mr-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+            </svg>
+          </div>
+          <div>
+            <p className="font-bold">Error al crear usuario</p>
+            <p className="text-sm text-red-500">{errorgql}</p>
           </div>
         </div>
       </div>
@@ -215,12 +251,12 @@ const Registro = () => {
                 className="bg-gray-800 w-full mt-5 p-2 text-white uppercase tw-hover:underline tw-no-underline"
                 value="Registro Usuario"
               />
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2 py-1"
-                htmlFor="nombre"
-              >
-                {mensaje && mostrar()}
-              </label>
+              <div>{mensaje ? mostrar() : null}</div>
+              <div>
+                {typeof errorgql === "string" || errorgql instanceof String
+                  ? mostrarError()
+                  : null}
+              </div>
             </form>
           </div>
         </div>
