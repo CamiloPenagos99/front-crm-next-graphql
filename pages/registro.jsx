@@ -1,25 +1,22 @@
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useQuery, gql } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 
-const QUERY = gql`
-  query ObtenerProducto {
-    obtenerProductos {
-      id
+const NUEVA_CUENTA = gql`
+  mutation NuevoVendedor($input: UsuarioInput!) {
+    usuario(input: $input) {
       nombre
-      precio
-      stock
+      apellido
+      email
+      id
     }
   }
 `;
 const Registro = () => {
+  //Crear usuario, Mutation
+  const [usuario] = useMutation(NUEVA_CUENTA);
   //validación del formulario
-
-  //obtener los productos
-
-  const { data } = useQuery(QUERY);
-  console.log(`Data GQL: ${JSON.stringify(data)}`);
 
   const formik = useFormik({
     initialValues: {
@@ -39,8 +36,21 @@ const Registro = () => {
         .min(6, "El Password debe ser de minimo, 6 digitos"),
     }),
     //se ejecuta cuando se da submit al form
-    onSubmit: (valores) => {
+    onSubmit: async (valores) => {
       console.log("Enviando...", valores);
+      try {
+        const user = await usuario({
+          variables: {
+            input: {
+              ...valores,
+            },
+          },
+        });
+        console.log("User", user);
+        if (user) alert(`¡Usuario ${valores.nombre} creado correctamente!`);
+      } catch (error) {
+        console.log("error");
+      }
     },
   });
 
