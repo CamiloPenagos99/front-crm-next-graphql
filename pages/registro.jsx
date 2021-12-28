@@ -1,9 +1,25 @@
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useQuery, gql } from "@apollo/client";
 
+const QUERY = gql`
+  query ObtenerProducto {
+    obtenerProductos {
+      id
+      nombre
+      precio
+      stock
+    }
+  }
+`;
 const Registro = () => {
   //validación del formulario
+
+  //obtener los productos
+
+  const { data } = useQuery(QUERY);
+  console.log(`Data GQL: ${JSON.stringify(data)}`);
 
   const formik = useFormik({
     initialValues: {
@@ -15,8 +31,12 @@ const Registro = () => {
     validationSchema: Yup.object({
       nombre: Yup.string().required("El Nombre es Obligatorio"),
       apellido: Yup.string().required("El Apellido es Obligatorio"),
-      email: Yup.string().email("El Email no es valido").required("El Email es Obligatorio"),
-      password: Yup.string().required("El Password es Obligatorio").min(6, 'El Password debe ser de minimo, 6 digitos'),
+      email: Yup.string()
+        .email("El Email no es valido")
+        .required("El Email es Obligatorio"),
+      password: Yup.string()
+        .required("El Password es Obligatorio")
+        .min(6, "El Password debe ser de minimo, 6 digitos"),
     }),
     //se ejecuta cuando se da submit al form
     onSubmit: (valores) => {
@@ -62,9 +82,7 @@ const Registro = () => {
                   <strong className="font-bold">Error: </strong>
                   <p className="block sm:inline">{formik.errors.nombre}</p>
                 </div>
-              ) : (
-                null
-              )}
+              ) : null}
 
               <div className="mb-5">
                 <label
@@ -92,9 +110,7 @@ const Registro = () => {
                   <strong className="font-bold">Error: </strong>
                   <p className="block sm:inline">{formik.errors.apellido}</p>
                 </div>
-              ) : (
-                null
-              )}
+              ) : null}
 
               <div className="mb-5">
                 <label
@@ -122,9 +138,7 @@ const Registro = () => {
                   <strong className="font-bold">Error: </strong>
                   <p className="block sm:inline">{formik.errors.email}</p>
                 </div>
-              ) : (
-                null
-              )}
+              ) : null}
               <div className="mb-5">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -150,9 +164,7 @@ const Registro = () => {
                   <strong className="font-bold">Error: </strong>
                   <p className="block sm:inline">{formik.errors.password}</p>
                 </div>
-              ) : (
-                null
-              )}
+              ) : null}
 
               <input
                 type="submit"
