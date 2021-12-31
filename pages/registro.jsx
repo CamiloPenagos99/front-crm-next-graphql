@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { useMutation, gql } from "@apollo/client";
 import { useState } from "react";
@@ -19,6 +20,10 @@ const Registro = () => {
   console.log("Componente redenrizando...");
   const [mensaje, setMensaje] = useState(null);
   const [errorgql, setErrorgql] = useState(null);
+
+  //router
+
+  const router = useRouter();
   //Crear usuario, Mutation
   const [usuario] = useMutation(NUEVA_CUENTA);
   //validación del formulario
@@ -53,19 +58,21 @@ const Registro = () => {
         });
         console.log("User", data);
         if (data) {
+          console.log("Vendedor creado");
           setMensaje(true);
-          setTimeout(() => setMensaje(null), 3000);
+          setTimeout(() => setMensaje(null), 2000);
           setTimeout(() => resetForm(), 1000);
+          setTimeout(() => router.push("/login"), 3000);
         }
         //alert(`¡Usuario ${data.usuario.nombre} creado correctamente!`);
       } catch (e) {
         console.log("Error al registrar");
         setErrorgql(e.message);
-        console.log('estado: ', errorgql)
+        console.log("estado: ", errorgql);
         console.log("Error al registrar: ", e.message);
         setTimeout(() => setErrorgql(null), 3000);
         setTimeout(() => resetForm(), 1000);
-        console.log('estado: ', errorgql)
+        console.log("estado: ", errorgql);
       }
     },
   });
