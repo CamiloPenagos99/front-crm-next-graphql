@@ -9,5 +9,5 @@ export const useAuth = () => {
     else if (!tkn) setAuthenticated(false);
   }, []);
 
-  return authenticated;
+  return {authenticated};
 };
