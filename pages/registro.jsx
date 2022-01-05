@@ -67,12 +67,13 @@ const Registro = () => {
         //alert(`¡Usuario ${data.usuario.nombre} creado correctamente!`);
       } catch (e) {
         console.log("Error al registrar");
+        console.log("antes del cambio de estado");
         setErrorgql(e.message);
         console.log("estado: ", errorgql);
-        console.log("Error al registrar: ", e.message);
+        console.log("Mensaje de error: ", e.message);
         setTimeout(() => setErrorgql(null), 3000);
         setTimeout(() => resetForm(), 1000);
-        console.log("estado: ", errorgql);
+        //console.log("estado: ", errorgql);
       }
     },
   });

@@ -5,20 +5,16 @@ import * as Yup from "yup";
 import { useMutation, gql } from "@apollo/client";
 
 const LOGIN = gql`
-  mutation NuevoVendedor($input: UsuarioInput!) {
-    usuario(input: $input) {
-      nombre
-      apellido
-      email
-      id
+  mutation Autenticacion($input: LoginUsuarioInput!) {
+    autenticacion(input: $input) {
+      token
     }
   }
 `;
 
 const Login = () => {
-
-   //Crear usuario, Mutation
-   const [usuario] = useMutation(LOGIN);
+  //Crear usuario, Mutation
+  const [autenticacion, { data, loading, error }] = useMutation(LOGIN);
 
   const formik = useFormik({
     initialValues: {
@@ -33,9 +29,22 @@ const Login = () => {
     }),
 
     onSubmit: async (valores) => {
-      alert(JSON.stringify(valores));
+      try {
+        const response = await autenticacion({
+          variables: {
+            input: {
+              ...valores,
+            },
+          },
+        });
+        console.log("response:", response.data.autenticacion.token);
+      } catch (e) {
+        console.error(e);
+      }
     },
   });
+
+  if(loading) return (<div>Validando en el servidor...</div>)
   return (
     <>
       <Layout>
