@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation, gql } from "@apollo/client";
+import { useRouter } from "next/router";
 
 const LOGIN = gql`
   mutation Autenticacion($input: LoginUsuarioInput!) {
@@ -13,6 +14,7 @@ const LOGIN = gql`
 `;
 
 const Login = () => {
+  const router = useRouter();
   //Crear usuario, Mutation
   const [autenticacion, { data, loading, error }] = useMutation(LOGIN);
 
@@ -39,6 +41,7 @@ const Login = () => {
         });
         console.log("response:", response.data.autenticacion.token);
         localStorage.setItem("tkn", response.data.autenticacion.token);
+        router.push("/");
       } catch (e) {
         console.error(e);
       }

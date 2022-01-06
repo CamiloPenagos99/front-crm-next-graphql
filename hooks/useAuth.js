@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const useAuth = () => {
-  const [authenticated, setAuthenticated] = useState(null);
+  const [authenticated, setAuthenticated] = useState(true);
 
   useEffect(() => {
     const tkn = localStorage.getItem("tkn");
