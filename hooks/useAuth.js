@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { isJwtExpired } from "jwt-check-expiration";
 
 export const useAuth = () => {
   const [authenticated, setAuthenticated] = useState(true);
 
   useEffect(() => {
     const tkn = localStorage.getItem("tkn");
-    if (tkn) setAuthenticated(true);
-    else if (!tkn) setAuthenticated(false);
+    const expired = isJwtExpired(tkn);
+    if (tkn && !expired) setAuthenticated(true);
+    else if (!tkn || expired) setAuthenticated(false);
   }, []);
 
-  return {authenticated};
+  return { authenticated };
 };

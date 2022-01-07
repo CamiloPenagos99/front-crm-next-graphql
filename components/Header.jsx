@@ -27,7 +27,7 @@ export const Header = ({ nombre, id }) => {
         <div className="inline-flex items-center bg-white leading-none text-pink-600 rounded-full p-2 shadow text-teal text-sm">
           <button
             onClick={handleLogOut}
-            className="inline-flex bg-pink-600 text-white rounded-full h-6 px-3 justify-center items-center"
+            className="inline-flex bg-pink-600 text-white rounded-full h-6 px-3 justify-center items-center hover:bg-pink-500"
           >
             Cerrar sesion:
           </button>

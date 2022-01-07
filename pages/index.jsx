@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
+import Link from "next/link";
 
 const CLIENTES = gql`
   query obtenerClientesVendedor {
@@ -42,6 +43,13 @@ export default function Home() {
     <div>
       <Layout>
         <h1 className="text-4xl text-cyan-800 font-light">Clientes</h1>
+        
+        <br />
+        <Link href="/nuevoCliente">
+          <a className="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:border-gray-700 text-sm hover:bg-blue-500 mb-3">
+            Registrar cliente
+          </a>
+        </Link>
 
         {!data ? (
           spinner
