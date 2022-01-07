@@ -18,9 +18,8 @@ const CLIENTES = gql`
 `;
 
 export default function Home() {
-  console.log("Render clientes");
   const { loading, error, data } = useQuery(CLIENTES);
-
+  console.log("Render clientes", data);
   const spinner = (
     <button type="button" className="bg-indigo-500 ..." disabled>
       <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg>
@@ -29,6 +28,16 @@ export default function Home() {
   );
 
   if (loading) return spinner;
+  if (error)
+    return (
+      <div
+        className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3"
+        role="alert"
+      >
+        <p className="font-bold">Error del servidor</p>
+        <p className="text-sm">{error.message}</p>
+      </div>
+    );
 
   return (
     <div>
