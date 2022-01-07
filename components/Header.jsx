@@ -20,7 +20,7 @@ export const Header = ({ nombre, id }) => {
     router.push("/login");
   };
 
-  if (loading) return <p>Cargango información...</p>;
+  if (loading) return <p>Cargando información...</p>;
   return (
     <div className="flex justify-end">
       <div className="p-2">
