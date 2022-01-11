@@ -1,23 +1,46 @@
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useMutation, gql } from "@apollo/client";
+import { Mensaje } from "../utils/mensaje";
+import { Error } from "../utils/error";
 
-const nuevoCliente = () => {
+const CREARCLIENTE = gql`
+  mutation NuevoCliente($input: InputCliente!) {
+    nuevoCliente(input: $input) {
+      apellido
+      email
+      nombre
+    }
+  }
+`;
+
+const NuevoCliente = () => {
+  console.log("Renderizando componente");
+  const [nuevoCliente, { data, loading, error }] = useMutation(CREARCLIENTE);
   const formik = useFormik({
     initialValues: {
       nombre: "",
       apellido: "",
+      empresa: "",
+      email: "",
+      // telefono: "",
     },
     validationSchema: Yup.object({
-      nombre: Yup.string()
-        .email("El email no es valido")
+      nombre: Yup.string().required("El nombre es obligatorio"),
+      apellido: Yup.string().required("El apellido es obligatorio"),
+      empresa: Yup.string().required("La empresa es obligatorio"),
+      email: Yup.string()
+        .email("Formato de email, no valido")
         .required("El email es obligatorio"),
-      password: Yup.string().required("El password es obligatorio"),
+      //telefono: Yup.string().optional("El telefono es obligatorio"),
     }),
 
     onSubmit: async (valores) => {
       try {
-        const response = await autenticacion({
+        console.log(JSON.stringify(valores));
+
+        const response = await nuevoCliente({
           variables: {
             input: {
               ...valores,
@@ -25,7 +48,7 @@ const nuevoCliente = () => {
           },
         });
       } catch (e) {
-        console.error(e);
+        console.error(e.message);
       }
     },
   });
@@ -35,7 +58,10 @@ const nuevoCliente = () => {
       <h1 className="text-4xl text-cyan-800 font-light">Registrar Cliente:</h1>
       <div className="flex justify-center mt-5">
         <div className="w-full max-w-lg">
-          <form className="bg-white shadow-md px-8 pt-6 pb-8 mb-4">
+          <form
+            className="bg-white shadow-md px-8 pt-6 pb-8 mb-4"
+            onSubmit={formik.handleSubmit}
+          >
             <div className="mb-5">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -53,7 +79,15 @@ const nuevoCliente = () => {
                 value={formik.values.nombre}
               ></input>
             </div>
-
+            {formik.touched.nombre && formik.errors.nombre ? (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                role="alert"
+              >
+                <strong className="font-bold">Error: </strong>
+                <p className="block sm:inline">{formik.errors.nombre}</p>
+              </div>
+            ) : null}
             <div className="mb-5">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -71,7 +105,15 @@ const nuevoCliente = () => {
                 value={formik.values.apellido}
               ></input>
             </div>
-
+            {formik.touched.apellido && formik.errors.apellido ? (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                role="alert"
+              >
+                <strong className="font-bold">Error: </strong>
+                <p className="block sm:inline">{formik.errors.apellido}</p>
+              </div>
+            ) : null}
             <div className="mb-5">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -89,8 +131,15 @@ const nuevoCliente = () => {
                 value={formik.values.empresa}
               ></input>
             </div>
-
-
+            {formik.touched.empresa && formik.errors.empresa ? (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                role="alert"
+              >
+                <strong className="font-bold">Error: </strong>
+                <p className="block sm:inline">{formik.errors.empresa}</p>
+              </div>
+            ) : null}
             <div className="mb-5">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -108,30 +157,37 @@ const nuevoCliente = () => {
                 value={formik.values.email}
               ></input>
             </div>
-
-            <div className="mb-5">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2 py-1"
-                htmlFor="telefono"
+            {formik.touched.email && formik.errors.email ? (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                role="alert"
               >
-                Telefono:
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline focus:ring focus:ring-blue-300"
-                id="telefono"
-                type="tel"
-                placeholder="telefono"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.telefono}
-              ></input>
-            </div>
+                <strong className="font-bold">Error: </strong>
+                <p className="block sm:inline">{formik.errors.email}</p>
+              </div>
+            ) : null}
 
             <input
-                type="submit"
-                className="bg-blue-400 w-full mt-5 p-2 text-white uppercase tw-hover:underline tw-no-underline"
-                value="Registrar"
-              />
+              type="submit"
+              className="bg-blue-400 w-full mt-5 p-2 text-white uppercase tw-hover:underline tw-no-underline"
+              value="Registrar"
+            />
+            <div>
+              {data ? (
+                <Mensaje
+                  title="Cliente registrado"
+                  desc="Cliente registrado correctamente"
+                ></Mensaje>
+              ) : null}
+            </div>
+            <div>
+              {error ? (
+                <Error
+                  title="Error de registro"
+                  desc="Error al registrar cliente"
+                ></Error>
+              ) : null}
+            </div>
           </form>
         </div>
       </div>
@@ -139,4 +195,4 @@ const nuevoCliente = () => {
   );
 };
 
-export default nuevoCliente;
+export default NuevoCliente;
