@@ -47,6 +47,7 @@ const NuevoCliente = () => {
             },
           },
         });
+        console.log(response);
       } catch (e) {
         console.error(e.message);
       }
