@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { useMutation, gql } from "@apollo/client";
 import { Mensaje } from "../utils/mensaje";
 import { Error } from "../utils/error";
+import { useRouter } from "next/router";
 
 const CREARCLIENTE = gql`
   mutation NuevoCliente($input: InputCliente!) {
@@ -17,6 +18,7 @@ const CREARCLIENTE = gql`
 
 const NuevoCliente = () => {
   console.log("Renderizando componente");
+  const router = useRouter();
   const [nuevoCliente, { data, loading, error }] = useMutation(CREARCLIENTE);
   const formik = useFormik({
     initialValues: {
@@ -47,7 +49,7 @@ const NuevoCliente = () => {
             },
           },
         });
-        console.log(response);
+        if(response) router.push('/') //redireccionamiento a clientes
       } catch (e) {
         console.error(e.message);
       }
