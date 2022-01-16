@@ -43,7 +43,7 @@ export default function Home() {
     <div>
       <Layout>
         <h1 className="text-4xl text-cyan-800 font-light">Clientes</h1>
-        
+
         <br />
         <Link href="/nuevoCliente">
           <a className="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:border-gray-700 text-sm hover:bg-blue-500 mb-3">
@@ -60,6 +60,7 @@ export default function Home() {
                 <th className="w-1/5 py-2">Nombre</th>
                 <th className="w-1/5 py-2">Empresa</th>
                 <th className="w-1/5 py-2">Email</th>
+                <th className="w-1/5 py-2">Acción</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -70,6 +71,29 @@ export default function Home() {
                   </td>
                   <td className="border px-4 py-2">{cliente.empresa}</td>
                   <td className="border px-4 py-2">{cliente.email}</td>
+                  <td className="border px-4 py-2">
+                    <button
+                      type="button"
+                      className="flex justify-center bg-red-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold"
+                      onClick={()=>alert('Eliminar...')}
+                    >
+                      Eliminar
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
