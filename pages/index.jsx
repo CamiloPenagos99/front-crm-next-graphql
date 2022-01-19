@@ -28,7 +28,7 @@ const ELIMINARCLIENTE = gql`
 export default function Home() {
   const { loading, error, data } = useQuery(CLIENTES);
   const [eliminarCliente] = useMutation(ELIMINARCLIENTE);
-  //console.log("Render clientes", data);
+  console.log("Render clientes");
   const spinner = (
     <button type="button" className="bg-indigo-500 ..." disabled>
       <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg>
@@ -36,7 +36,7 @@ export default function Home() {
     </button>
   );
 
-  const confirmarEliminarCliente = (id) => {
+  const confirmarEliminarCliente = (idCliente) => {
     Swal.fire({
       title: "¿Estas seguro, de eliminar cliente?",
       text: "Eliminar al cliente, es irreversible",
@@ -49,20 +49,22 @@ export default function Home() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          console.log(`Eliminando... ${id}`);
+          console.log(`Eliminando... ${idCliente}`);
 
-          const { data } = await eliminarCliente({
+          const response = await eliminarCliente({
             variables: {
-              id,
+              eliminarClienteId: idCliente+'',
             },
           });
-          console.log("Se elimino: ", data);
+          console.log("Se elimino: ", response);
           Swal.fire(
             "Eliminado",
             "El cliente se ha eliminado correctamente",
             "completo"
           );
-        } catch (error) {}
+        } catch (error) {
+          console.error(error);
+        }
       }
     });
   };
