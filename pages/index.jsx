@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import Link from "next/link";
 import Swal from "sweetalert2";
 
@@ -19,8 +19,15 @@ const CLIENTES = gql`
   }
 `;
 
+const ELIMINARCLIENTE = gql`
+  mutation EliminarCliente($eliminarClienteId: ID!) {
+    eliminarCliente(id: $eliminarClienteId)
+  }
+`;
+
 export default function Home() {
   const { loading, error, data } = useQuery(CLIENTES);
+  const [eliminarCliente] = useMutation(ELIMINARCLIENTE);
   //console.log("Render clientes", data);
   const spinner = (
     <button type="button" className="bg-indigo-500 ..." disabled>
@@ -35,17 +42,27 @@ export default function Home() {
       text: "Eliminar al cliente, es irreversible",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#053476",
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, borrar",
-    }).then((result) => {
+      cancelButtonText: "No, cancelar",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log(`Confirmar la eliminación del cliente: ${id}`);
-        Swal.fire(
-          "Eliminado",
-          "El cliente se ha eliminado correctamente",
-          "completo"
-        );
+        try {
+          console.log(`Eliminando... ${id}`);
+
+          const { data } = await eliminarCliente({
+            variables: {
+              id,
+            },
+          });
+          console.log("Se elimino: ", data);
+          Swal.fire(
+            "Eliminado",
+            "El cliente se ha eliminado correctamente",
+            "completo"
+          );
+        } catch (error) {}
       }
     });
   };
