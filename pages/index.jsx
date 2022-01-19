@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 const CLIENTES = gql`
   query obtenerClientesVendedor {
@@ -20,13 +21,34 @@ const CLIENTES = gql`
 
 export default function Home() {
   const { loading, error, data } = useQuery(CLIENTES);
-  console.log("Render clientes", data);
+  //console.log("Render clientes", data);
   const spinner = (
     <button type="button" className="bg-indigo-500 ..." disabled>
       <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg>
       Cargando...
     </button>
   );
+
+  const confirmarEliminarCliente = (id) => {
+    Swal.fire({
+      title: "¿Estas seguro, de eliminar cliente?",
+      text: "Eliminar al cliente, es irreversible",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, borrar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(`Confirmar la eliminación del cliente: ${id}`);
+        Swal.fire(
+          "Eliminado",
+          "El cliente se ha eliminado correctamente",
+          "completo"
+        );
+      }
+    });
+  };
 
   if (error)
     return (
@@ -75,7 +97,7 @@ export default function Home() {
                     <button
                       type="button"
                       className="flex justify-center bg-red-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold"
-                      onClick={()=>alert('Eliminar...')}
+                      onClick={() => confirmarEliminarCliente(cliente.id)}
                     >
                       Eliminar
                       <svg
