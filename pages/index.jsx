@@ -4,7 +4,8 @@ import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Link from "next/link";
-import Swal from "sweetalert2";
+
+import { Cliente } from "../components/Cliente";
 
 const CLIENTES = gql`
   query obtenerClientesVendedor {
@@ -27,7 +28,7 @@ const ELIMINARCLIENTE = gql`
 
 export default function Home() {
   const { loading, error, data } = useQuery(CLIENTES);
-  const [eliminarCliente] = useMutation(ELIMINARCLIENTE);
+
   console.log("Render clientes");
   const spinner = (
     <button type="button" className="bg-indigo-500 ..." disabled>
@@ -35,39 +36,6 @@ export default function Home() {
       Cargando...
     </button>
   );
-
-  const confirmarEliminarCliente = (idCliente) => {
-    Swal.fire({
-      title: "¿Estas seguro, de eliminar cliente?",
-      text: "Eliminar al cliente, es irreversible",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#053476",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, borrar",
-      cancelButtonText: "No, cancelar",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          console.log(`Eliminando... ${idCliente}`);
-
-          const response = await eliminarCliente({
-            variables: {
-              eliminarClienteId: idCliente+'',
-            },
-          });
-          console.log("Se elimino: ", response);
-          Swal.fire(
-            "Eliminado",
-            "El cliente se ha eliminado correctamente",
-            "completo"
-          );
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    });
-  };
 
   if (error)
     return (
@@ -106,36 +74,7 @@ export default function Home() {
             </thead>
             <tbody className="bg-white">
               {data.obtenerClientesVendedor.map((cliente) => (
-                <tr key={cliente.id}>
-                  <td className="border px-4 py-2">
-                    {cliente.nombre} {cliente.apellido}
-                  </td>
-                  <td className="border px-4 py-2">{cliente.empresa}</td>
-                  <td className="border px-4 py-2">{cliente.email}</td>
-                  <td className="border px-4 py-2">
-                    <button
-                      type="button"
-                      className="flex justify-center bg-red-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold"
-                      onClick={() => confirmarEliminarCliente(cliente.id)}
-                    >
-                      Eliminar
-                      <svg
-                        className="w-4 h-4 ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
+                <Cliente key={cliente.id} cliente={cliente}></Cliente>
               ))}
             </tbody>
           </table>
