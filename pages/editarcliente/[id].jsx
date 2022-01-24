@@ -15,7 +15,7 @@ const OBTENERCLIENTE = gql`
       id
       nombre
       empresa
-      vendedor
+      email
     }
   }
 `;
@@ -27,7 +27,19 @@ const EditarCliente = () => {
     variables: { idCliente: id },
   });
 
-  // const { nombre, apellido, empresa, email } = data.obtenerCliente;
+  //esquema de validación
+  const validationSchema = Yup.object({
+    nombre: Yup.string().required("El nombre es obligatorio"),
+    apellido: Yup.string().required("El apellido es obligatorio"),
+    empresa: Yup.string().required("La empresa es obligatorio"),
+    email: Yup.string()
+      .email("Formato de email, no valido")
+      .required("El email es obligatorio"),
+    //telefono: Yup.string().optional("El telefono es obligatorio"),
+  });
+
+  if (loading) return <Loader message="Cargando información"></Loader>;
+  const { obtenerCliente } = data;
 
   /*  
   const formik = useFormik({
@@ -75,7 +87,11 @@ const EditarCliente = () => {
           <h1 className="text-4xl text-cyan-800 font-light">Editar Cliente:</h1>
           <div className="flex justify-center mt-5">
             <div className="w-full max-w-lg">
-              <Formik>
+              <Formik
+                validationSchema={validationSchema}
+                enableReinitialize
+                initialValues={obtenerCliente}
+              >
                 {(props) => {
                   console.log(props);
 
@@ -98,18 +114,20 @@ const EditarCliente = () => {
                           placeholder="nombre"
                           onChange={props.handleChange}
                           onBlur={props.handleBlur}
-                          //value={formik.values.nombre}
+                          value={props.values.nombre}
                         ></input>
                       </div>
-                      {/*   {formik.touched.nombre && formik.errors.nombre ? (
-                    <div
-                      className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
-                      role="alert"
-                    >
-                      <strong className="font-bold">Error: </strong>
-                      <p className="block sm:inline">{formik.errors.nombre}</p>
-                    </div>
-                  ) : null} */}
+                      {props.touched.nombre && props.errors.nombre ? (
+                        <div
+                          className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                          role="alert"
+                        >
+                          <strong className="font-bold">Error: </strong>
+                          <p className="block sm:inline">
+                            {props.errors.nombre}
+                          </p>
+                        </div>
+                      ) : null}
                       <div className="mb-5">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -124,18 +142,20 @@ const EditarCliente = () => {
                           placeholder="apellido"
                           onChange={props.handleChange}
                           onBlur={props.handleBlur}
-                          //value={formik.values.apellido}
+                          value={props.values.apellido}
                         ></input>
                       </div>
-                      {/*      {formik.touched.apellido && formik.errors.apellido ? (
-                    <div
-                      className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
-                      role="alert"
-                    >
-                      <strong className="font-bold">Error: </strong>
-                      <p className="block sm:inline">{formik.errors.apellido}</p>
-                    </div>
-                  ) : null} */}
+                      {props.touched.apellido && props.errors.apellido ? (
+                        <div
+                          className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                          role="alert"
+                        >
+                          <strong className="font-bold">Error: </strong>
+                          <p className="block sm:inline">
+                            {props.errors.apellido}
+                          </p>
+                        </div>
+                      ) : null}
                       <div className="mb-5">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -150,18 +170,20 @@ const EditarCliente = () => {
                           placeholder="empresa"
                           onChange={props.handleChange}
                           onBlur={props.handleBlur}
-                      //value={formik.values.empresa} 
+                          value={props.values.empresa}
                         ></input>
                       </div>
-                      {/*       {formik.touched.empresa && formik.errors.empresa ? (
-                    <div
-                      className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
-                      role="alert"
-                    >
-                      <strong className="font-bold">Error: </strong>
-                      <p className="block sm:inline">{formik.errors.empresa}</p>
-                    </div>
-                  ) : null} */}
+                      {props.touched.empresa && props.errors.empresa ? (
+                        <div
+                          className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                          role="alert"
+                        >
+                          <strong className="font-bold">Error: </strong>
+                          <p className="block sm:inline">
+                            {props.errors.empresa}
+                          </p>
+                        </div>
+                      ) : null}
                       <div className="mb-5">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2 py-1"
@@ -176,18 +198,20 @@ const EditarCliente = () => {
                           placeholder="email"
                           onChange={props.handleChange}
                           onBlur={props.handleBlur}
-                      //value={formik.values.email} 
+                          value={props.values.email}
                         ></input>
                       </div>
-                      {/*      {formik.touched.email && formik.errors.email ? (
-                    <div
-                      className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
-                      role="alert"
-                    >
-                      <strong className="font-bold">Error: </strong>
-                      <p className="block sm:inline">{formik.errors.email}</p>
-                    </div>
-                  ) : null} */}
+                      {props.touched.email && props.errors.email ? (
+                        <div
+                          className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded relative"
+                          role="alert"
+                        >
+                          <strong className="font-bold">Error: </strong>
+                          <p className="block sm:inline">
+                            {props.errors.email}
+                          </p>
+                        </div>
+                      ) : null}
 
                       <input
                         type="submit"
