@@ -1,5 +1,6 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Swal from "sweetalert2";
+import router, { useRouter } from "next/router";
 
 export const Cliente = ({ cliente }) => {
   const CLIENTES = gql`
@@ -91,7 +92,11 @@ export const Cliente = ({ cliente }) => {
       cancelButtonText: "No, cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("Entrar en modo edición");
+       /* router.push({
+          pathname: "/editarcliente/[id]",
+          query: { id },
+        }); */
+        router.push( `/editarcliente/${id}`)
       }
     });
   };
