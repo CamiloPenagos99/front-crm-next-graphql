@@ -7,19 +7,32 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import * as Yup from "yup";
 import Loader from "../../utils/loader";
 import { Formik } from "formik";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 const OBTENERCLIENTE = gql`
   query obtenerCliente($idCliente: ID!) {
     obtenerCliente(idCliente: $idCliente) {
       apellido
-      id
       nombre
       empresa
       email
     }
   }
 `;
+
+const EDITARCLIENTE = gql`
+  mutation EditarCliente($cliente: InputCliente!, $editarClienteId: ID!) {
+    editarCliente(cliente: $cliente, id: $editarClienteId) {
+      nombre
+      apellido
+      empresa
+      email
+    }
+  }
+`;
 const EditarCliente = () => {
+  const [editado, setEditado] = useState(null);
   const router = useRouter();
   const { id } = router.query;
 
@@ -27,6 +40,7 @@ const EditarCliente = () => {
     variables: { idCliente: id },
   });
 
+  const [editarCliente] = useMutation(EDITARCLIENTE);
   //esquema de validación
   const validationSchema = Yup.object({
     nombre: Yup.string().required("El nombre es obligatorio"),
@@ -91,6 +105,28 @@ const EditarCliente = () => {
                 validationSchema={validationSchema}
                 enableReinitialize
                 initialValues={obtenerCliente}
+                onSubmit={async (values, actions) => {
+                  try {
+                    console.log("Enviando data edición", values);
+                    const response = await editarCliente({
+                      variables: {
+                        cliente: {
+                          ...values,
+                        },
+                        editarClienteId: id,
+                      },
+                    });
+                    if (response) setEditado(true);
+                  } catch (error) {
+                    console.log("Error en la edición");
+                    Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: error.message,
+                      footer: '<a href="">Why do I have this issue?</a>',
+                    });
+                  }
+                }}
               >
                 {(props) => {
                   console.log(props);
@@ -98,7 +134,7 @@ const EditarCliente = () => {
                   return (
                     <form
                       className="bg-white shadow-md px-8 pt-6 pb-8 mb-4"
-                      /*  onSubmit={formik.handleSubmit} */
+                      onSubmit={props.handleSubmit}
                     >
                       <div className="mb-5">
                         <label
@@ -219,11 +255,11 @@ const EditarCliente = () => {
                         value="Editar"
                       />
                       <div>
-                        {false ? (
+                        {editado ? (
                           // eslint-disable-next-line react/jsx-no-undef
                           <Mensaje
-                            title="Cliente registrado"
-                            desc="Cliente registrado correctamente"
+                            title="Cliente editado"
+                            desc="Cliente editado correctamente"
                           ></Mensaje>
                         ) : null}
                       </div>
