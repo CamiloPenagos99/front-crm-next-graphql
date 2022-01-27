@@ -1,6 +1,7 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Swal from "sweetalert2";
 import router, { useRouter } from "next/router";
+import BotonEliminar from "../utils/botonEliminar";
 
 export const Cliente = ({ cliente }) => {
   const CLIENTES = gql`
@@ -92,11 +93,11 @@ export const Cliente = ({ cliente }) => {
       cancelButtonText: "No, cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-       /* router.push({
+        /* router.push({
           pathname: "/editarcliente/[id]",
           query: { id },
         }); */
-        router.push( `/editarcliente/${id}`)
+        router.push(`/editarcliente/${id}`);
       }
     });
   };
@@ -110,27 +111,7 @@ export const Cliente = ({ cliente }) => {
         <td className="border px-4 py-2">{cliente.empresa}</td>
         <td className="border px-4 py-2">{cliente.email}</td>
         <td className="border px-4 py-2">
-          <button
-            type="button"
-            className="flex justify-center bg-red-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold"
-            onClick={() => confirmarEliminarCliente(cliente.id)}
-          >
-            Eliminar
-            <svg
-              className="w-4 h-4 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </button>
+          <BotonEliminar funcion={confirmarEliminarCliente} id={cliente.id}></BotonEliminar>
           <button
             type="button"
             className="flex justify-center bg-gray-800 py-2 px-4 w-full text-white rounded text-xs uppercase font-bold"

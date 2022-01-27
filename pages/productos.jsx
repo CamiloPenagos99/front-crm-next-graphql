@@ -51,15 +51,16 @@ const Productos = () => {
                           <th className="p-2 whitespace-nowrap">
                             <div className="font-semibold text-center">Id</div>
                           </th>
+                          <th className="p-2 whitespace-nowrap">
+                            <div className="font-semibold text-center">Acción</div>
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="text-sm divide-y divide-gray-100">
                         {data.obtenerProductos.map((product) => {
-                          <Product
-                            key={product.id}
-                            producto={product}
-                          ></Product>;
+                          return <Product key={product.id} producto={product}></Product>;
                         })}
+                        {console.log(data.obtenerProductos)}
                       </tbody>
                     </table>
                   </div>
