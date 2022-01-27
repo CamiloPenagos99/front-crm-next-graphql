@@ -32,6 +32,8 @@ const EDITARCLIENTE = gql`
   }
 `;
 const EditarCliente = () => {
+
+  console.log('render: edita cliente.....')
   const [editado, setEditado] = useState(null);
   const router = useRouter();
   const { id } = router.query;
@@ -107,16 +109,24 @@ const EditarCliente = () => {
                 initialValues={obtenerCliente}
                 onSubmit={async (values, actions) => {
                   try {
-                    console.log("Enviando data edición", values);
+                    console.log("Enviando data edición", values, id);
+                    const { nombre, apellido, empresa, email } = values;
                     const response = await editarCliente({
                       variables: {
                         cliente: {
-                          ...values,
+                          nombre,
+                          apellido,
+                          empresa,
+                          email,
                         },
                         editarClienteId: id,
                       },
                     });
-                    if (response) setEditado(true);
+                    if (response) {
+                      setEditado(true);
+                      console.log("cambio estado");
+                      router.push("/");
+                    }
                   } catch (error) {
                     console.log("Error en la edición");
                     Swal.fire({
