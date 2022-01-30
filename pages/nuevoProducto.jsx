@@ -38,16 +38,20 @@ const NuevoProcuto = () => {
       try {
         console.log(JSON.stringify(valores));
         const { nombre, precio, stock } = valores;
+        const precioInt = parseInt(precio);
+        const stockInt = parseInt(stock);
         const response = await producto({
           variables: {
             input: {
               nombre,
-              precio,
-              stock,
+              precio: precioInt,
+              stock: stockInt,
             },
           },
         });
-        if (response) router.push("/productos"); //redireccionamiento a productos
+        if (response) {
+          setTimeout(() => router.push("/productos"), 1000);
+        } //redireccionamiento a productos
       } catch (e) {
         console.error(e.message);
       }
