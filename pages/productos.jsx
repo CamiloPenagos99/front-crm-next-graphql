@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Loader from "../utils/loader";
 import { Product } from "../components/Product";
+import Link from "next/link";
 
 const PRODUCTOS = gql`
   query Query {
@@ -21,7 +22,13 @@ const Productos = () => {
   return (
     <div>
       <Layout>
-        <h1 className="text-2xl text-gray-800 font-light">Productos</h1>
+      <h1 className="text-4xl text-cyan-800 font-light">Productos</h1>
+        <br />
+        <Link href="/nuevoProducto">
+          <a className="text-white bg-gray-600 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:border-gray-700 text-sm hover:bg-blue-500 mb-3">
+            Nuevo producto
+          </a>
+        </Link>
         {data ? (
           <section className="antialiased bg-gray-100 text-gray-600 h-screen px-4">
             <div className="flex flex-col justify-center h-full">
@@ -52,13 +59,20 @@ const Productos = () => {
                             <div className="font-semibold text-center">Id</div>
                           </th>
                           <th className="p-2 whitespace-nowrap">
-                            <div className="font-semibold text-center">Acción</div>
+                            <div className="font-semibold text-center">
+                              Acción
+                            </div>
                           </th>
                         </tr>
                       </thead>
                       <tbody className="text-sm divide-y divide-gray-100">
                         {data.obtenerProductos.map((product) => {
-                          return <Product key={product.id} producto={product}></Product>;
+                          return (
+                            <Product
+                              key={product.id}
+                              producto={product}
+                            ></Product>
+                          );
                         })}
                         {console.log(data.obtenerProductos)}
                       </tbody>

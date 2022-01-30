@@ -1,6 +1,3 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Link from "next/link";
