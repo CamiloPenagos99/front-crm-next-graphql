@@ -1,6 +1,8 @@
 import BotonEliminar from "../utils/botonEliminar";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Swal from "sweetalert2";
+import BotonEditar from "../utils/botonEditar";
+import { useRouter } from "next/router";
 
 const ELIMINARPRODUCTO = gql`
   mutation EliminarProducto($eliminarProductoId: ID!) {
@@ -13,6 +15,7 @@ const ELIMINARPRODUCTO = gql`
 `;
 
 export const Product = ({ producto }) => {
+  const router = useRouter();
   function confirmarEliminarProducto(id) {
     Swal.fire({
       title: "¿Estas seguro, de eliminar el producto?",
@@ -52,6 +55,27 @@ export const Product = ({ producto }) => {
     });
   }
 
+  const confirmarEditarProducto = (id) => {
+    Swal.fire({
+      title: "¿Quieres editar el Producto?",
+      text: "Asegurate de registrar la información correcta",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#475B63",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, editar producto",
+      cancelButtonText: "No, cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        /* router.push({
+          pathname: "/editarcliente/[id]",
+          query: { id },
+        }); */
+        router.push(`/editarproducto/${id}`);
+      }
+    });
+  };
+
   const [eliminarProducto] = useMutation(ELIMINARPRODUCTO);
   return (
     <>
@@ -81,6 +105,10 @@ export const Product = ({ producto }) => {
               funcion={confirmarEliminarProducto}
               id={producto.id}
             ></BotonEliminar>
+            <BotonEditar
+              funcion={confirmarEditarProducto}
+              id={producto.id}
+            ></BotonEditar>
           </div>
         </td>
       </tr>
