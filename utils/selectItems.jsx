@@ -3,9 +3,9 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 
 const options = [
-  { id: "Televisor led", nombre: "tv" },
-  { id: "Audifonos", nombre: "audifonos" },
-  { id: "Mouse Gamer", nombre: "mouse" },
+  { id: "1", nombre: "Televisor HD" },
+  { id: "2", nombre: "Audifonos" },
+  { id: "3", nombre: "Teclado" },
 ];
 
 const SelectItem = () => {
@@ -26,12 +26,13 @@ const SelectItem = () => {
         options={options}
         onChange={(productos) => agregarProducto(productos)}
         label="Seleccione el producto"
+        placeholder="Seleccione el producto"
         noOptionsMessage={() => "No hay productos..."}
         getOptionLabel={(opciones) => {
-          return opciones.id;
+          return opciones.nombre;
         }}
         getOptionValue={(opciones) => {
-          return opciones.nombre;
+          return opciones.id;
         }}
       />
     </>
