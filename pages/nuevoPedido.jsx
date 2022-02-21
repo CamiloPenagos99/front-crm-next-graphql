@@ -20,11 +20,12 @@ const NuevoPedido = () => {
       <Layout>
         <div>
           <h1 className="text-4xl text-cyan-800 font-light">Nuevo Pedido:</h1>
+          <AsignarCliente></AsignarCliente>
           <h2 className="text-2xl text-blue-800 font-light pt-4 pb-4">
             Seleccionar productos:
           </h2>
           <SelectItem></SelectItem>
-          <AsignarCliente></AsignarCliente>
+          
         </div>
       </Layout>
     </>

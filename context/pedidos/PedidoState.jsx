@@ -11,7 +11,7 @@ const PedidoState = (props) => {
   //State de pedidos
 
   const initialState = {
-    cliente: [],
+    cliente: {},
     productos: [],
     total: 0,
   };
