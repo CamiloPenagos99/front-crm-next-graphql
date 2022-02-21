@@ -4,24 +4,22 @@ import { useQuery, gql } from "@apollo/client";
 import Loader from "../../utils/loader";
 import StorePedidoContext from "../../context/pedidos/PedidoContext";
 
-const CLIENTES = gql`
-  query obtenerClientesVendedor {
-    obtenerClientesVendedor {
-      apellido
-      nombre
+const PRODUCTOS = gql`
+  query Query {
+    obtenerProductos {
       id
-      empresa
-      vendedor
-      email
+      nombre
+      precio
+      stock
     }
   }
 `;
-const AsignarCliente = () => {
+const AsignarProductos = () => {
   const [cliente, setCliente] = useState([]);
   //store context
   const storeContext = useContext(StorePedidoContext);
   const { agregaClientePedido } = storeContext;
-  const { loading, error, data } = useQuery(CLIENTES);
+  const { loading, error, data } = useQuery(PRODUCTOS);
 
   useEffect(() => {
     agregaClientePedido(cliente);
@@ -31,20 +29,21 @@ const AsignarCliente = () => {
     setCliente(cliente);
   };
 
-  if (loading) return <Loader message="Cargando clientes"></Loader>;
+  if (loading) return <Loader message="Cargando productos"></Loader>;
 
-  const options = data.obtenerClientesVendedor;
+  const options = data.obtenerProductos;
   console.log("options", options);
   return (
     <>
-      <p className="mt-10 bg-white border-l-4 border-gray-800 text-gray-600 p-2 text-sm font-bold pb-3">
-        Asignar cliente al pedido:
+      <p className="mt-10 bg-white border-l-4 border-blue-800 text-gray-600 p-2 text-sm font-bold pb-3">
+        Asignar productos al pedido:
       </p>
       <Select
         options={options}
+        isMulti="true"
         onChange={(selectClient) => agregarCliente(selectClient)}
-        placeholder="Seleccione el cliente"
-        noOptionsMessage={() => "No hay clientes..."}
+        placeholder="Seleccione el producto"
+        noOptionsMessage={() => "No hay productos..."}
         getOptionLabel={(opciones) => {
           return opciones.nombre;
         }}
@@ -55,4 +54,4 @@ const AsignarCliente = () => {
     </>
   );
 };
-export default AsignarCliente;
+export default AsignarProductos;

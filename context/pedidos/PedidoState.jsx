@@ -21,8 +21,15 @@ const PedidoState = (props) => {
   };
 
   const [state, dispatch] = useReducer(PedidoReducer, initialState);
+
+  const agregaClientePedido = (cliente) => {
+    dispatch({
+      type: SELECCIONAR_CLIENTE,
+      payload: cliente,
+    });
+  };
   return (
-    <StorePedidoContext.Provider value={{ holaMundo }}>
+    <StorePedidoContext.Provider value={{ agregaClientePedido, state }}>
       {props.children}
     </StorePedidoContext.Provider>
   );
