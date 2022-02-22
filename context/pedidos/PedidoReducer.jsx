@@ -12,6 +12,12 @@ const PedidoReducer = (state, action) => {
         cliente: action.payload,
       };
     }
+    case SELECCIONAR_PRODUCTO: {
+      return {
+        ...state,
+        productos: action.payload,
+      };
+    }
     default:
       return state;
   }

@@ -28,8 +28,17 @@ const PedidoState = (props) => {
       payload: cliente,
     });
   };
+
+  const agregaProductosPedido = (productos) => {
+    dispatch({
+      type: SELECCIONAR_PRODUCTO,
+      payload: productos,
+    });
+  };
   return (
-    <StorePedidoContext.Provider value={{ agregaClientePedido, state }}>
+    <StorePedidoContext.Provider
+      value={{ agregaClientePedido, state, agregaProductosPedido }}
+    >
       {props.children}
     </StorePedidoContext.Provider>
   );

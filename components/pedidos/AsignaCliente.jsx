@@ -17,7 +17,7 @@ const CLIENTES = gql`
   }
 `;
 const AsignarCliente = () => {
-  const [cliente, setCliente] = useState([]);
+  const [cliente, setCliente] = useState({});
   //store context
   const storeContext = useContext(StorePedidoContext);
   const { agregaClientePedido } = storeContext;

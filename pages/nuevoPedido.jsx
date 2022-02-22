@@ -11,11 +11,13 @@ import AsignarProductos from "../components/pedidos/AsignaProductos";
 
 const NuevoPedido = () => {
   //consumir un store
+  console.log("renderizado nuevo...");
 
   const context = useContext(StorePedidoContext);
 
   console.log("Provider: ", context);
   const { nombre, apellido } = context.state.cliente;
+  const productos = context.state.productos;
 
   return (
     <>
@@ -29,7 +31,12 @@ const NuevoPedido = () => {
           <></>
         ) : (
           <div className="mt-6 mb-6">
-            <PedidoResumen nombre={nombre} apellido={apellido}></PedidoResumen>
+            <PedidoResumen
+              nombre={nombre}
+              apellido={apellido}
+              cantidad={productos.length}
+              productos={productos}
+            ></PedidoResumen>
           </div>
         )}
       </Layout>

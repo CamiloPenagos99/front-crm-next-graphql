@@ -15,18 +15,18 @@ const PRODUCTOS = gql`
   }
 `;
 const AsignarProductos = () => {
-  const [cliente, setCliente] = useState([]);
+  const [productos, setProductos] = useState([]);
   //store context
   const storeContext = useContext(StorePedidoContext);
-  const { agregaClientePedido } = storeContext;
+  const { agregaProductosPedido } = storeContext;
   const { loading, error, data } = useQuery(PRODUCTOS);
 
   useEffect(() => {
-    agregaClientePedido(cliente);
-  }, [cliente]);
+    agregaProductosPedido(productos);
+  }, [productos]);
 
-  const agregarCliente = (cliente) => {
-    setCliente(cliente);
+  const agregarProducto = (productos) => {
+    setProductos(productos);
   };
 
   if (loading) return <Loader message="Cargando productos"></Loader>;
@@ -41,11 +41,11 @@ const AsignarProductos = () => {
       <Select
         options={options}
         isMulti="true"
-        onChange={(selectClient) => agregarCliente(selectClient)}
+        onChange={(selectProduct) => agregarProducto(selectProduct)}
         placeholder="Seleccione el producto"
         noOptionsMessage={() => "No hay productos..."}
         getOptionLabel={(opciones) => {
-          return opciones.nombre;
+          return `${opciones.nombre} - stock: ${opciones.stock}`;
         }}
         getOptionValue={(opciones) => {
           return opciones.id;
