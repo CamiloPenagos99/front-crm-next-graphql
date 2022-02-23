@@ -18,6 +18,18 @@ const PedidoReducer = (state, action) => {
         productos: action.payload,
       };
     }
+
+    case CANTIDAD_PRODUCTOS: {
+      return {
+        ...state,
+        productos: state.productos.map((producto) => {
+          const retorno =
+            producto.id == action.payload.id ? action.payload : producto;
+
+          return retorno;
+        }),
+      };
+    }
     default:
       return state;
   }

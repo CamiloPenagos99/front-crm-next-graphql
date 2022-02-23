@@ -9,6 +9,7 @@ import { useContext } from "react";
 
 import AsignarProductos from "../components/pedidos/AsignaProductos";
 import ResumenPedido from "../components/pedidos/ResumenPedido";
+import CalculoTotal from "../components/pedidos/CalculoTotal";
 
 const NuevoPedido = () => {
   //consumir un store
@@ -30,6 +31,13 @@ const NuevoPedido = () => {
               <AsignarCliente></AsignarCliente>
               <AsignarProductos></AsignarProductos>
               <ResumenPedido></ResumenPedido>
+              <CalculoTotal></CalculoTotal>
+              <button
+                type="button"
+                className={`bg-gray-500 rounded w-full mt-5 p-2 text-white uppercase font-bold hover:bg-gray-900`}
+              >
+                Registrar pedido
+              </button>
             </div>
           </div>
         </div>
