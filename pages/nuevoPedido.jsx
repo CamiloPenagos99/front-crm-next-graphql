@@ -8,6 +8,7 @@ import StorePedidoContext from "../context/pedidos/PedidoContext";
 import { useContext } from "react";
 
 import AsignarProductos from "../components/pedidos/AsignaProductos";
+import ResumenPedido from "../components/pedidos/ResumenPedido";
 
 const NuevoPedido = () => {
   //consumir un store
@@ -24,8 +25,13 @@ const NuevoPedido = () => {
       <Layout>
         <div>
           <h1 className="text-4xl text-cyan-800 font-light">Nuevo Pedido:</h1>
-          <AsignarCliente></AsignarCliente>
-          <AsignarProductos></AsignarProductos>
+          <div className="flex justify-center mt-5">
+            <div className="w-full max-w-lg">
+              <AsignarCliente></AsignarCliente>
+              <AsignarProductos></AsignarProductos>
+              <ResumenPedido></ResumenPedido>
+            </div>
+          </div>
         </div>
         {!nombre | !apellido ? (
           <></>
