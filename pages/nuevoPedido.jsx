@@ -20,7 +20,18 @@ const NuevoPedido = () => {
   console.log("Provider: ", context);
   const { nombre, apellido } = context.state.cliente;
   const productos = context.state.productos;
-
+  const total = context.state.total;
+  const validarFormularioPedido = () => {
+    console.log("validar formulario: ", {
+      nombre,
+      productos: productos.length,
+      total,
+    });
+    if (!nombre || productos.length == 0 || total == 0) {
+      return "opacity-50 cursor-not-allowed";
+    }
+    return "rounded";
+  };
   return (
     <>
       <Layout>
@@ -34,7 +45,7 @@ const NuevoPedido = () => {
               <CalculoTotal></CalculoTotal>
               <button
                 type="button"
-                className={`bg-gray-500 rounded w-full mt-5 p-2 text-white uppercase font-bold hover:bg-gray-900`}
+                className={`bg-blue-700 rounded w-full mt-5 p-2 text-white uppercase font-bold hover:bg-blue-500 ${validarFormularioPedido()}`}
               >
                 Registrar pedido
               </button>
