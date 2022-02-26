@@ -30,9 +30,21 @@ const PedidoState = (props) => {
   };
 
   const agregaProductosPedido = (productos) => {
+    var nuevoState = [];
+    if (state.productos > 0) {
+      //tomar del segundo arreglo una copia, para asignarlo al primero
+      nuevoState = productos.map((producto) => {
+        const nuevoProducto = state.productos.find(
+          (productoStte) => productoStte.id === producto.id
+        );
+        return { ...producto, ...nuevoProducto };
+      });
+    } else {
+      nuevoState = productos;
+    }
     dispatch({
       type: SELECCIONAR_PRODUCTO,
-      payload: productos,
+      payload: nuevoState,
     });
   };
 
