@@ -4,6 +4,7 @@ import {
   SELECCIONAR_CLIENTE,
   SELECCIONAR_PRODUCTO,
   CANTIDAD_PRODUCTOS,
+  TOTAL_PEDIDO,
 } from "../../types";
 import PedidoReducer from "./PedidoReducer";
 
@@ -14,10 +15,6 @@ const PedidoState = (props) => {
     cliente: {},
     productos: [],
     total: 0,
-  };
-
-  const holaMundo = () => {
-    console.log("Hola mundo desde reducer");
   };
 
   const [state, dispatch] = useReducer(PedidoReducer, initialState);
@@ -57,6 +54,13 @@ const PedidoState = (props) => {
       payload: nuevoProducto,
     });
   };
+
+  const calcularTotal = (totalProducto) => {
+    dispatch({
+      type: TOTAL_PEDIDO,
+      payload: totalProducto,
+    });
+  };
   return (
     <StorePedidoContext.Provider
       value={{
@@ -64,6 +68,7 @@ const PedidoState = (props) => {
         agregaClientePedido,
         agregaProductosPedido,
         agregarCantidadProductos,
+        calcularTotal,
       }}
     >
       {props.children}

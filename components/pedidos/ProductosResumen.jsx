@@ -7,18 +7,26 @@ const ProductoResumen = ({ producto }) => {
   const [cantidad, setCantidad] = useState(0);
   console.log("cantidad", cantidad);
   const context = useContext(StorePedidoContext);
-  const { agregarCantidadProductos } = context;
+  const { agregarCantidadProductos, calcularTotal } = context;
   console.log("context producto", context);
 
   useEffect(() => {
     console.log("efecto cambia cantidad");
     actualizarCantidad();
+    calcularTotalProducto();
   }, [cantidad]);
 
   const actualizarCantidad = () => {
     const nuevoProducto = { ...producto, cantidad: Number(cantidad) };
     agregarCantidadProductos(nuevoProducto);
     console.log("producto: ", nuevoProducto);
+  };
+
+  const calcularTotalProducto = () => {
+    const cantidadProducto = Number(cantidad);
+    const totalProducto = cantidadProducto * producto.precio;
+    console.log("total producto: ", totalProducto);
+    calcularTotal(totalProducto);
   };
   return (
     <>
@@ -30,6 +38,7 @@ const ProductoResumen = ({ producto }) => {
         <input
           className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline md:ml-4"
           type="number"
+          min="0"
           placeholder="cantidad"
           onChange={(e) => setCantidad(e.target.value)}
           value={cantidad}

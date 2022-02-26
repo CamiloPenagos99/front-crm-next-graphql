@@ -2,6 +2,7 @@ import {
   SELECCIONAR_CLIENTE,
   SELECCIONAR_PRODUCTO,
   CANTIDAD_PRODUCTOS,
+  TOTAL_PEDIDO,
 } from "../../types/index.js";
 
 const PedidoReducer = (state, action) => {
@@ -28,6 +29,15 @@ const PedidoReducer = (state, action) => {
 
           return retorno;
         }),
+      };
+    }
+
+    case TOTAL_PEDIDO: {
+      return {
+        ...state,
+        total: state.productos.reduce((acumulado, producto) => {
+          return acumulado + producto.cantidad * producto.precio;
+        }, 0),
       };
     }
     default:
