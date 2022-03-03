@@ -78,7 +78,7 @@ const Registro = () => {
     },
   });
 
-  console.log("Componente redenrizando... FUERA");
+  console.log("Componente renderizado... FUERA");
 
   const mostrar = () => {
     return (
