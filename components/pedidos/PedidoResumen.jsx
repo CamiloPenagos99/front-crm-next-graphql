@@ -24,21 +24,15 @@ const PedidoResumen = (props) => {
                 <span className="font-semibold text-gray-800">Productos: </span>
                 <span className="text-gray-800">
                   {props.productos.map((producto) => {
-                    return <li>{producto.nombre}</li>;
+                    return <li key={producto.id}>{producto.nombre}</li>;
                   })}
                 </span>
               </div>
               <div>
                 <span className="font-semibold text-gray-800">Total: </span>
-                <span className="font-bold text-green-500">+ 12.5 $</span>
-              </div>
-              <div className="font-semibold">
-                <a href className="text-blue-600 mr-2">
-                  Enviar
-                </a>
-                <a href className="text-gray-400">
-                  Rechazar
-                </a>
+                <span className="font-bold text-green-500">
+                  + {props.total} $
+                </span>
               </div>
             </div>
           </div>

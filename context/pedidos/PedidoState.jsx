@@ -56,6 +56,7 @@ const PedidoState = (props) => {
   };
 
   const calcularTotal = (totalProducto) => {
+    console.log("dispatch totalProducto", totalProducto);
     dispatch({
       type: TOTAL_PEDIDO,
       payload: totalProducto,

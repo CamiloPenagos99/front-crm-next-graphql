@@ -10,7 +10,17 @@ import { useContext } from "react";
 import AsignarProductos from "../components/pedidos/AsignaProductos";
 import ResumenPedido from "../components/pedidos/ResumenPedido";
 import CalculoTotal from "../components/pedidos/CalculoTotal";
+import { gql, useMutation } from "@apollo/client";
 
+const NUEVO_PEDIDO = gql`
+  mutation NuevoPedido($input: InputPedido!) {
+    nuevoPedido(input: $input) {
+      total
+      vendedor
+      id
+    }
+  }
+`;
 const NuevoPedido = () => {
   //consumir un store
   console.log("renderizado nuevo...");
@@ -32,6 +42,8 @@ const NuevoPedido = () => {
     }
     return "rounded";
   };
+
+  const [nuevoPedido, { data, loading, error }] = useMutation(NUEVO_PEDIDO);
   return (
     <>
       <Layout>
@@ -61,6 +73,7 @@ const NuevoPedido = () => {
               apellido={apellido}
               cantidad={productos.length}
               productos={productos}
+              total={total}
             ></PedidoResumen>
           </div>
         )}
