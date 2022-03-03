@@ -26,18 +26,18 @@ const PedidoState = (props) => {
     });
   };
 
-  const agregaProductosPedido = (productos) => {
+  const agregaProductosPedido = (productosSeleccionados) => {
     var nuevoState = [];
-    if (state.productos > 0) {
+    if (state.productos.length > 0) {
       //tomar del segundo arreglo una copia, para asignarlo al primero
-      nuevoState = productos.map((producto) => {
+      nuevoState = productosSeleccionados.map((producto) => {
         const nuevoProducto = state.productos.find(
           (productoStte) => productoStte.id === producto.id
         );
         return { ...producto, ...nuevoProducto };
       });
     } else {
-      nuevoState = productos;
+      nuevoState = productosSeleccionados;
     }
     dispatch({
       type: SELECCIONAR_PRODUCTO,
