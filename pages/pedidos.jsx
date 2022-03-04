@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import Layout from "../components/Layout";
 import Loader from "../utils/loader";
 import Link from "next/dist/client/link";
+import Pedido from "../components/Pedido";
 
 const PEDIDOS = gql`
   query ObtenerPedidos {
@@ -31,7 +32,11 @@ const Pedidos = () => {
           </a>
         </Link>
         {data ? (
-          <div>{JSON.stringify(data.obtenerPedidos)}</div>
+          <div>
+            {data.obtenerPedidos.map((pedido) => {
+              return <Pedido pedido={pedido} key={pedido.id}></Pedido>;
+            })}
+          </div>
         ) : (
           <Loader message="Cargando información"></Loader>
         )}
