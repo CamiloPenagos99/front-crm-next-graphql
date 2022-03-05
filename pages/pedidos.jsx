@@ -5,22 +5,30 @@ import Link from "next/dist/client/link";
 import Pedido from "../components/Pedido";
 
 const PEDIDOS = gql`
-  query ObtenerPedidos {
-    obtenerPedidos {
+  query ObtenerPedidosVendedor {
+  obtenerPedidosVendedor {
+    vendedor
+    id
+    total
+    pedido {
       id
-      pedido {
-        id
-        cantidad
-      }
-      total
-      cliente
-      vendedor
-      estado
+      cantidad
     }
+    cliente {
+      id
+      nombre
+      apellido
+      email
+    }
+    vendedor
+    estado
   }
+}
 `;
 const Pedidos = () => {
   const { loading, error, data } = useQuery(PEDIDOS);
+  if (error) return <h1>ERROR {JSON.stringify(error)}</h1>;
+  console.log("todos los pedidos:", data);
   return (
     <div>
       <Layout>
@@ -33,7 +41,7 @@ const Pedidos = () => {
         </Link>
         {data ? (
           <div>
-            {data.obtenerPedidos.map((pedido) => {
+            {data.obtenerPedidosVendedor.map((pedido) => {
               return <Pedido pedido={pedido} key={pedido.id}></Pedido>;
             })}
           </div>
