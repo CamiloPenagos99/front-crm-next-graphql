@@ -6,16 +6,29 @@ const Pedido = (props) => {
   const { id, total, cliente, estado } = props.pedido;
   console.log("Objeto Pedido Cliente", cliente);
   const [estadoPedido, setEstadoPedido] = useState(estado);
+  const [clasePedido, setClasePedido] = useState(estado);
 
   useEffect(() => {
     if (estadoPedido) {
       setEstadoPedido(estadoPedido);
     }
+    modificarClasePedido();
   }, [estadoPedido]);
 
+  const modificarClasePedido = () => {
+    if (estadoPedido === "PENDIENTE") {
+      setClasePedido("border-yellow-500");
+    } else if (estadoPedido === "COMPLETADO") {
+      setClasePedido("border-green-500");
+    } else {
+      setClasePedido("border-red-500");
+    }
+  };
   return (
     <>
-      <div className="mt-4 bg-white rounded p-6 md:grid md:grid-cols-2 md:gap-4 shadow-lg">
+      <div
+        className={`${clasePedido} border-t-4 mt-4 bg-white rounded p-6 md:grid md:grid-cols-2 md:gap-4 shadow-lg`}
+      >
         <div>
           <p className="font-bold text-red-800 ">
             Cliente:
