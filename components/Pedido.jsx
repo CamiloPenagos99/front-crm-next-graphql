@@ -13,6 +13,12 @@ const ACTUALIZARESTADOPEDIDO = gql`
     }
   }
 `;
+
+const ELIMINARPEDIDO = gql`
+  mutation EliminarPedido($eliminarPedidoId: ID!) {
+    eliminarPedido(id: $eliminarPedidoId)
+  }
+`;
 const Pedido = (props) => {
   console.log("Objeto Pedido", props.pedido);
   const { id, total, cliente, estado } = props.pedido;
@@ -21,6 +27,7 @@ const Pedido = (props) => {
   const [clasePedido, setClasePedido] = useState(estado);
 
   const [actualizarEstadoPedido] = useMutation(ACTUALIZARESTADOPEDIDO);
+  const [eliminarPedido] = useMutation(ELIMINARPEDIDO);
 
   useEffect(() => {
     if (estadoPedido) {
@@ -66,6 +73,46 @@ const Pedido = (props) => {
       console.error("error actualizando pedido: ", error.message);
     }
   };
+
+  const confirmarEliminarPedido = (pedido) => {
+    Swal.fire({
+      title: "¿Estas seguro, de eliminar pedido?",
+      text: "Eliminar el pedido, es irreversible",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#053476",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, borrar",
+      cancelButtonText: "No, cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          console.log(`Eliminando... ${pedido}`);
+
+          const response = await eliminarPedido({
+            variables: {
+              eliminarPedidoId: pedido,
+            },
+          });
+          console.log("Se elimino: ", response);
+          Swal.fire(
+            "Eliminado",
+            "El pedido se ha eliminado correctamente",
+            "completo"
+          );
+        } catch (error) {
+          console.error(error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.message,
+            footer: '<a href="">Why do I have this issue?</a>',
+          });
+        }
+      }
+    });
+  };
+
   return (
     <>
       <div
@@ -128,7 +175,10 @@ const Pedido = (props) => {
             Total: <span className="text-green-600">${total}</span>
           </p>
           <div className="w-32 mt-2">
-            <BotonEliminar></BotonEliminar>
+            <BotonEliminar
+              funcion={confirmarEliminarPedido}
+              id={id}
+            ></BotonEliminar>
           </div>
         </div>
       </div>
