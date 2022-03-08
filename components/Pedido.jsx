@@ -1,12 +1,26 @@
 import { useEffect, useState } from "react";
 import BotonEliminar from "../utils/botonEliminar";
+import { gql, useMutation } from "@apollo/client";
+import Swal from "sweetalert2";
 
+const ACTUALIZARESTADOPEDIDO = gql`
+  mutation ActualizarEstadoPedido($pedidoInput: InputEstadoPedido!) {
+    actualizarEstadoPedido(pedidoInput: $pedidoInput) {
+      id
+      estado
+      total
+      vendedor
+    }
+  }
+`;
 const Pedido = (props) => {
   console.log("Objeto Pedido", props.pedido);
   const { id, total, cliente, estado } = props.pedido;
-  console.log("Objeto Pedido Cliente", cliente);
+  console.log("Objeto Pedido Cliente", { cliente });
   const [estadoPedido, setEstadoPedido] = useState(estado);
   const [clasePedido, setClasePedido] = useState(estado);
+
+  const [actualizarEstadoPedido] = useMutation(ACTUALIZARESTADOPEDIDO);
 
   useEffect(() => {
     if (estadoPedido) {
@@ -22,6 +36,34 @@ const Pedido = (props) => {
       setClasePedido("border-green-500");
     } else {
       setClasePedido("border-red-500");
+    }
+  };
+
+  const modificarEstadoValue = async (nuevoEstado) => {
+    try {
+      console.log("render antes del query");
+      const response = await actualizarEstadoPedido({
+        variables: {
+          pedidoInput: {
+            pedido: id,
+            cliente: cliente.id,
+            estado: nuevoEstado,
+          },
+        },
+      });
+      if (response.data) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Estado del pedido actualizado: ${response.data.actualizarEstadoPedido.estado}`,
+          showConfirmButton: false,
+          timer: 1200,
+        });
+
+        setEstadoPedido(nuevoEstado);
+      }
+    } catch (error) {
+      console.error("error actualizando pedido: ", error.message);
     }
   };
   return (
@@ -62,6 +104,7 @@ const Pedido = (props) => {
             name=""
             id=""
             value={estadoPedido}
+            onChange={(e) => modificarEstadoValue(e.target.value)}
             className="opacity-75 mt-2 appearance-none hover:bg-blue-700 bg-blue-200 border border-gray-400 text-gray p-2 text-center rounded leading-tight uppercase text-xs font-bold"
           >
             <option value="COMPLETADO">COMPLETADO</option>
