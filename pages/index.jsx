@@ -17,12 +17,6 @@ const CLIENTES = gql`
   }
 `;
 
-const ELIMINARCLIENTE = gql`
-  mutation EliminarCliente($eliminarClienteId: ID!) {
-    eliminarCliente(id: $eliminarClienteId)
-  }
-`;
-
 export default function Home() {
   const { loading, error, data } = useQuery(CLIENTES);
 
